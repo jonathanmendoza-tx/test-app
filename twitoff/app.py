@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 	
 def create_app():
 	app = Flask(__name__)
@@ -14,6 +14,6 @@ def create_app():
 
 	@app.route('/hello')
 	def hello_world():
-		return '<h1><b><font color = "red">Hello, World!</font></b></h1>'
+		return render_template('base.html', title = 'Hello')
 
 	return app
