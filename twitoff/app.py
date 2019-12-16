@@ -1,19 +1,22 @@
+import uuid
 from flask import Flask, render_template
-	
+from .models import DB, User, Tweet	
+
 def create_app():
 	app = Flask(__name__)
+	app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my_db.sqlite'
+	DB.init_app(app)
 
 	@app.route('/')
-	def kittens():
-		return """
-		<h1><font color = "blue">Hello, World!</font></h1>
-		<br>
-		<img src = "https://trupanion.com/-/media/trupanion/images/testimonials/cupcake-testimonials.jpg?h=260&la=en&w=264&hash=FA027D857DE3853BA38F1DBD0EB5B862C91AD451", alt= "kitten">
-
-		"""
+	def index():
+		rand_name = str(uuid.uuid4())
+		rand_u = User(name=rand_name)
+		DB.session.add(rand_u)
+		DB.session.commit()
+		return 'Index Page'
 
 	@app.route('/hello')
 	def hello_world():
-		return render_template('base.html', title = 'Hello')
+		return render_template('base.html', title = 'Home', users = users)
 
 	return app
